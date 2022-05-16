@@ -6,9 +6,20 @@ const pokemonsController = new pokemonsControl()
 router.get('/pokemons', (req, res) => {
     pokemonsController.HelloWorld(req,res);
 })
+
 router.get('/pokemons/listAll',(req,res) => {
-    pokemonsController.listAllPokemon()
+    pokemonsController.listAllPokemon(req, res)
 })
+
+router.post('/pokemons/add', async (req, res) => {
+    pokemonsController.add(req, res);
+});
+
+router.delete('/pokemons/:namePokemon', async (req, res) =>{
+    pokemonsController.deleteById(res, req);
+})
+
+
 
 
 //Tres important pour le require dans le app.js !!!
