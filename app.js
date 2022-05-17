@@ -8,5 +8,5 @@ const routerPokemons = require('./routers/pokemons.router')
 app.use(express.json())
 app.use('/',routerPokemons)
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3000
 app.listen(port, () => console.log(`Application node demarrée sur : http://localhost:${port}`))

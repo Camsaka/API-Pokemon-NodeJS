@@ -8,7 +8,6 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/app.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controllers/pokemons.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/pokemons.controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/pokemon.model.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/pokemon.model.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routers/pokemons.router.js" beforeDir="false" afterPath="$PROJECT_DIR$/routers/pokemons.router.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -66,6 +65,9 @@
       <workItem from="1652605971669" duration="8042000" />
       <workItem from="1652618276043" duration="152000" />
       <workItem from="1652618677988" duration="6931000" />
+      <workItem from="1652688135606" duration="128000" />
+      <workItem from="1652789416154" duration="78000" />
+      <workItem from="1652808491038" duration="1940000" />
     </task>
     <servers />
   </component>

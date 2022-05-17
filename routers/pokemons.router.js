@@ -3,7 +3,7 @@ const router = express.Router()
 const pokemonsControl = require('../controllers/pokemons.controller')
 const pokemonsController = new pokemonsControl()
 
-router.get('/pokemons', (req, res) => {
+router.get('/pokemons/', (req, res) => {
     pokemonsController.HelloWorld(req,res);
 })
 
@@ -15,8 +15,12 @@ router.post('/pokemons/add', async (req, res) => {
     pokemonsController.add(req, res);
 });
 
-router.delete('/pokemons/:namePokemon', async (req, res) =>{
-    pokemonsController.deleteById(res, req);
+// router.delete('/pokemons/:namePokemon', async (req, res) =>{
+//     pokemonsController.deleteById(res, req);
+// })
+
+router.get('/pokemons/get/:id', async (req, res) => {
+    pokemonsController.getById(req, res);
 })
 
 

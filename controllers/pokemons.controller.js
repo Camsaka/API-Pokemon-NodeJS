@@ -25,12 +25,19 @@ class pokemonsController{
         res.json(pokemon);
     }
 
-    async deleteById(req, res){
-        const nameP = req.params.namePokemon;
-        const pokemon = await Pokemon.deleteOne({name: nameP});
+    // async deleteById(req, res){
+    //     const nameP = req.params.name
+    //     const pokemon = await Pokemon.deleteOne({name: nameP});
+    //
+    //     res.json(pokemon);
+    //     res.send("pokemon supprimer")
+    // }
 
-        res.json(pokemon);
-        res.send("pokemon supprimer")
+    async getById(req,res){
+        const id = req.params.id
+        const pokemon = await Pokemon.findById(id)
+
+        res.json(pokemon)
     }
 
 }
