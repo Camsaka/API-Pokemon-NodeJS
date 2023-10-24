@@ -29,7 +29,7 @@ const port = process.env.PORT || 3000;
 //  app.use(express.json())
 //morgan logger
 app.use(express.json())
-   .use(morgan("dev"))
+   // .use(morgan("dev"))
    .use(favicon(path.join(__dirname, "favicon.ico")))
    .use(express.static(path.join(__dirname, "/src/public")));
 
