@@ -40,8 +40,8 @@ app.get("/", (req, res) => {
    res.sendFile(path.join(__dirname, "/src/views/index.html"));
 });
 
-// app.use("/pokemons", auth, routerPokemons);
-// app.use("/login", routerUsers);
+app.use("/pokemons", auth, routerPokemons);
+app.use("/login", routerUsers);
 
 //404 errors management
 app.use((req, res) => {
