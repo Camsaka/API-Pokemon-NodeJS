@@ -182,66 +182,33 @@ class pokemonsController {
          });
    }
 
+   //function to get all pokemons with pagination options
+   //this function can take page=<number> and nb=<number> in query param
+   //by default it will return page 1 with 4 pokemons
    async getAllPaginate(req, res) {
-      if (req.query.page && req.query.page > 0) {
-         const page = parseInt(req.query.page);
-         if (req.query.nb && req.query.nb > 0) {
-            const numberPerPage = parseInt(req.query.nb);
-            await Pokemon.aggregate([
-               {
-                  $facet: {
-                     totalData: [
-                        { $match: {} },
-                        { $skip: numberPerPage * (page - 1) },
-                        { $limit: numberPerPage },
-                     ],
-                     totalCount: [{ $count: "count" }],
-                  },
-               },
-            ]).then((totalData) => {
-               if (totalData[0].totalData[0] !== undefined) {
-                  const message = `Les pokémons ont bien été récupérés. page : ${page} total : ${totalData[0].totalCount[0].count}`;
-                  res.json({ message, totalData });
-               } else {
-                  const message = `Page : ${page} vide.`;
-                  res.status(400).json({ message });
-               }
-            });
-         } else {
-            await Pokemon.aggregate([
-               {
-                  $facet: {
-                     totalData: [
-                        { $match: {} },
-                        { $skip: 4 * (page - 1) },
-                        { $limit: 4 },
-                     ],
-                     totalCount: [{ $count: "count" }],
-                  },
-               },
-            ]).then((totalData) => {
-               if (totalData[0].totalData[0] !== undefined) {
-                  const message = `Les pokémons ont bien été récupérés. page : ${page} total : ${totalData[0].totalCount[0].count}`;
-                  res.json({ message, totalData });
-               } else {
-                  const message = `Page : ${page} vide.`;
-                  res.status(400).json({ message });
-               }
-            });
-         }
-      } else {
-         await Pokemon.aggregate([
-            {
-               $facet: {
-                  totalData: [{ $match: {} }, { $limit: 4 }],
-                  totalCount: [{ $count: "count" }],
-               },
+         const page = (req.query.page && req.query.page > 0) ? parseInt(req.query.page): 1;
+         const numberPerPage = (req.query.nb && req.query.nb > 0) ? parseInt(req.query.nb) : 4;
+      await Pokemon.aggregate([
+         {
+            $facet: {
+               totalData: [
+                  { $match: {} },
+                  { $skip: numberPerPage * (page - 1) },
+                  { $limit: numberPerPage },
+               ],
+               totalCount: [{ $count: "count" }],
             },
-         ]).then((totalData) => {
-            const message = `Les pokémons ont bien été récupérés. page : 1,  total : ${totalData[0].totalCount[0].count}`;
-            res.json({ message, totalData });
-         });
-      }
+         },
+      ])
+         .then((totalData) => {
+            if (totalData[0].totalData[0] !== undefined) {
+               const message = `Les pokémons ont bien été récupérés. page : ${page} total : ${totalData[0].totalCount[0].count}`;
+               res.json({ message, totalData });
+            } else {
+               const message = `Page : ${page} vide.`;
+               res.status(400).json({ message });
+            }
+         })
    }
 }
 
