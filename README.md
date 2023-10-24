@@ -7,4 +7,6 @@
 # To run : clone this project => npm init => npm run start
 
 # Heroku deployment
-# 
+# heroku create (-a name). Create app on heroku (check on your dashboard)
+# git push heroku main
+
