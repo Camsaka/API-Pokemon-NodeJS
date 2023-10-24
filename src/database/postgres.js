@@ -2,13 +2,29 @@ const { Sequelize, DataTypes } = require("sequelize");
 const UserModel = require("../models/user.model");
 const bcrypt = require("bcrypt");
 
-//Passing parameters separately (other dialects)
-const sequelize = new Sequelize("userapipokemons", "postgres", "root", {
-   host: "localhost",
-   dialect:
-      "postgres" /* one of 'mysql' | 'postgres' | 'sqlite' | 'mariadb' | 'mssql' | 'db2' | 'snowflake' | 'oracle' */,
-   logging: false,
-});
+let sequelize;
+
+if (process.env.NODE_ENV === "production") {
+   sequelize = new Sequelize(
+      "db8s2lm3nc0hp9",
+      "mssjrtppzqoxku",
+      "c0f472454343fb8f041d4f5fb60c0b1dcd10c5f5d04e6141b04186c797b82048",
+      {
+         host: "ec2-54-84-182-168.compute-1.amazonaws.com",
+         dialect:
+            "postgres" /* one of 'mysql' | 'postgres' | 'sqlite' | 'mariadb' | 'mssql' | 'db2' | 'snowflake' | 'oracle' */,
+         logging: true,
+      }
+   );
+} else {
+   //Passing parameters separately (other dialects)
+   sequelize = new Sequelize("userapipokemons", "postgres", "root", {
+      host: "localhost",
+      dialect:
+         "postgres" /* one of 'mysql' | 'postgres' | 'sqlite' | 'mariadb' | 'mssql' | 'db2' | 'snowflake' | 'oracle' */,
+      logging: false,
+   });
+}
 
 const User = UserModel(sequelize, DataTypes);
 
