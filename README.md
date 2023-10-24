@@ -5,3 +5,6 @@
 # See mongoose doc : https://mongoosejs.com/
 
 # To run : clone this project => npm init => npm run start
+
+# Heroku deployment
+# 

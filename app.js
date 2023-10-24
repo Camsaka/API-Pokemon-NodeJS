@@ -11,6 +11,7 @@ const routerUsers = require("./src/routers/users.router");
 const mock = require("./src/database/mockPokemons.js");
 const auth = require("./src/auth/auth");
 
+//heroku dynamic port
 const port = process.env.PORT || 3000;
 
 //homemade logger with middleware (deprecated)
@@ -32,7 +33,7 @@ app.use(express.json())
    .use(favicon(path.join(__dirname, "favicon.ico")))
    .use(express.static(path.join(__dirname, "/src/public")));
 
-//initialisation des BDD 
+//initialise databases
 postgres.initDB();
 mongodb.initDB(mock);
 
@@ -40,8 +41,7 @@ app.use("/pokemons", auth, routerPokemons);
 app.use("/login", routerUsers);
 
 
-//redirect all request without any path to a front page
-//we need top customize this logicaly
+//redirect empty end point on a html showing a little text
 app.get("/", (req, res) => {
    res.sendFile(__dirname + "/src/views/index.html");
 });

@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const PokemonSchema = require("../models/pokemon.model");
-
+   
 mongoose.connect(
    "mongodb+srv://camsaka:12345@cluster0.jskpb.mongodb.net/PokemonApiProject?retryWrites=true&w=majority",
    { useNewUrlParser: true, useUnifiedTopology: true }
