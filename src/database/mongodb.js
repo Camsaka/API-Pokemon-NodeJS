@@ -15,7 +15,7 @@ db.once("open", function () {
    console.log("Connected to the database! ✅");
 });
 
-const Pokemon = mongoose.model("Pokemons", PokemonSchema);
+const Pokemon = mongoose.model("Pokemon", PokemonSchema)
 
 const initDB = (mock) => {
    Pokemon.deleteMany({}).then(() => {

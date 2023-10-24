@@ -1,14 +1,14 @@
-const postgres = require("./database/postgres");
-const mongodb = require("./database/mongodb");
+const postgres = require("./src/database/postgres");
+const mongodb = require("./src/database/mongodb");
 const path = require("path");
 const express = require("express");
 const favicon = require("serve-favicon");
 const app = express();
-const routerPokemons = require("./routers/pokemons.router");
-const routerUsers = require("./routers/users.router");
+const routerPokemons = require("./src/routers/pokemons.router");
+const routerUsers = require("./src/routers/users.router");
 const morgan = require("morgan");
 const port = process.env.PORT || 3000;
-const mock = require("./database/pokemonsMock");
+const mock = require("./src/database/mockPokemons.js");
 
 //homemade logger with middleware (deprecated)
 // app.use((req, res, next) => {
@@ -27,9 +27,9 @@ const mock = require("./database/pokemonsMock");
 app.use(express.json())
    .use(morgan("dev"))
    .use(favicon(path.join(__dirname, "favicon.ico")))
-   .use(express.static(path.join(__dirname, "public")));
+   .use(express.static(path.join(__dirname, "/src/public")));
 
-//initialisation des BDD
+//initialisation des BDD 
 postgres.initDB();
 mongodb.initDB(mock);
 
@@ -40,7 +40,7 @@ app.use("/login", routerUsers);
 //redirect all request without any path to a front page
 //we need top customize this logicaly
 app.get("/", (req, res) => {
-   res.sendFile(__dirname + "/views/index.html");
+   res.sendFile(__dirname + "/src/views/index.html");
 });
 
 //404 errors management
