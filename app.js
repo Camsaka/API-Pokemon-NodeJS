@@ -1,15 +1,17 @@
-const postgres = require("./src/database/postgres");
-const mongodb = require("./src/database/mongodb");
-const path = require("path");
+const morgan = require("morgan");
 const express = require("express");
 const favicon = require("serve-favicon");
 const app = express();
+const path = require("path");
+
+const postgres = require("./src/database/postgres");
+const mongodb = require("./src/database/mongodb");
 const routerPokemons = require("./src/routers/pokemons.router");
 const routerUsers = require("./src/routers/users.router");
-const morgan = require("morgan");
-const port = process.env.PORT || 3000;
 const mock = require("./src/database/mockPokemons.js");
 const auth = require("./src/auth/auth");
+
+const port = process.env.PORT || 3000;
 
 //homemade logger with middleware (deprecated)
 // app.use((req, res, next) => {
