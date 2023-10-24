@@ -30,7 +30,7 @@ const port = process.env.PORT || 3000;
 //morgan logger
 app.use(express.json())
    // .use(morgan("dev"))
-   // .use(favicon(path.join(__dirname, "favicon.ico")))
+   .use(favicon(path.join(__dirname, "favicon.ico")))
    .use(express.static(path.join(__dirname, "/src/public")));
 
 //initialise databases
@@ -43,8 +43,7 @@ app.use("/login", routerUsers);
 
 //redirect empty end point on a html showing a little text
 app.get("/", (req, res) => {
-   // res.sendFile(__dirname + "/src/views/index.html");
-   res.json({ message: "Hello heroku"})
+   res.sendFile(__dirname + "/src/views/index.html");
 });
 
 //404 errors management
