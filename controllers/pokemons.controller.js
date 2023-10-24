@@ -1,6 +1,4 @@
-const Pokemon = require("../models/pokemon.model");
-const { success } = require("../helper.js");
-const mock = require("../database/pokemonsMock");
+const { Pokemon } = require("../database/mongodb");
 
 class pokemonsController {
    //request return all pokemon in database

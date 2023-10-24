@@ -1,12 +1,14 @@
-require("./database/postgres");
-require("./database/mongodb");
+const postgres = require("./database/postgres");
+const mongodb = require("./database/mongodb");
 const path = require("path");
 const express = require("express");
 const favicon = require("serve-favicon");
 const app = express();
 const routerPokemons = require("./routers/pokemons.router");
+const routerUsers = require("./routers/users.router");
 const morgan = require("morgan");
 const port = process.env.PORT || 3000;
+const mock = require("./database/pokemonsMock");
 
 //homemade logger with middleware (deprecated)
 // app.use((req, res, next) => {
@@ -25,8 +27,15 @@ const port = process.env.PORT || 3000;
 app.use(express.json())
    .use(morgan("dev"))
    .use(favicon(path.join(__dirname, "favicon.ico")))
-   .use(express.static(path.join(__dirname, "public")))
-   .use("/pokemons", routerPokemons)
+   .use(express.static(path.join(__dirname, "public")));
+
+//initialisation des BDD
+postgres.initDB();
+mongodb.initDB(mock);
+
+app.use("/pokemons", routerPokemons);
+app.use("/login", routerUsers);
+
 
 //redirect all request without any path to a front page
 //we need top customize this logicaly
