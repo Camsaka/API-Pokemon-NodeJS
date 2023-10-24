@@ -186,8 +186,10 @@ class pokemonsController {
    //this function can take page=<number> and nb=<number> in query param
    //by default it will return page 1 with 4 pokemons
    async getAllPaginate(req, res) {
-         const page = (req.query.page && req.query.page > 0) ? parseInt(req.query.page): 1;
-         const numberPerPage = (req.query.nb && req.query.nb > 0) ? parseInt(req.query.nb) : 4;
+      const page =
+         req.query.page && req.query.page > 0 ? parseInt(req.query.page) : 1;
+      const numberPerPage =
+         req.query.nb && req.query.nb > 0 ? parseInt(req.query.nb) : 4;
       await Pokemon.aggregate([
          {
             $facet: {
@@ -209,6 +211,11 @@ class pokemonsController {
                res.status(400).json({ message });
             }
          })
+         .catch((error) => {
+            const message =
+               "Une erreur est survenue réessayer dans quelques instants";
+            res.status(500).json({ message, data: error });
+         });
    }
 }
 
