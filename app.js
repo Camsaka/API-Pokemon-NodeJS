@@ -1,4 +1,3 @@
-// const morgan = require("morgan");
 const express = require("express");
 const favicon = require("serve-favicon");
 const app = express();
@@ -29,26 +28,20 @@ const port = process.env.PORT || 3000;
 //  app.use(express.json())
 //morgan logger
 app.use(express.json())
-   // .use(morgan("dev"))
    .use(favicon(__dirname + '/favicon.ico'))
-   // .use(express.static(path.join(__dirname, "/src/public")));
+   .use(express.static(path.join(__dirname, "/src/public")));
 
 //initialise databases
 postgres.initDB();
 mongodb.initDB(mock);
 
+//redirect empty end point on a html showing a little text
+app.get("/", (req, res) => {
+   res.sendFile(path.join(__dirname, "/src/views/index.html"));
+});
+
 app.use("/pokemons", auth, routerPokemons);
 app.use("/login", routerUsers);
-
-
-//redirect empty end point on a html showing a little text
-// app.get("/", (req, res) => {
-//    res.sendFile(path.join(__dirname, "/src/views/index.html"));
-// });
-
-app.get('/', (req, res) => {
-   res.json('Hello, Heroku ! 👋')
- })
 
 //404 errors management
 app.use((req, res) => {
@@ -58,6 +51,6 @@ app.use((req, res) => {
 });
 
 //port listening configuration
-app.listen(process.env.PORT || 3000, () =>
+app.listen(port, () =>
    console.log(`Application node demarrée sur : http://localhost:${port}`)
 );
