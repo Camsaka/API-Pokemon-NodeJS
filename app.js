@@ -30,8 +30,8 @@ const port = process.env.PORT || 3000;
 //morgan logger
 app.use(express.json())
    // .use(morgan("dev"))
-   .use(favicon(path.join(__dirname, "favicon.ico")))
-   .use(express.static(path.join(__dirname, "/src/public")));
+   .use(favicon(__dirname + "favicon.ico"))
+   .use(express.static(__dirname + "/src/public"));
 
 //initialise databases
 postgres.initDB();
