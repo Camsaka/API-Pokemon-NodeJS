@@ -11,7 +11,7 @@ const mock = require("./src/database/mockPokemons.js");
 const auth = require("./src/auth/auth");
 
 //heroku dynamic port
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || '3000';
 
 //homemade logger with middleware (deprecated)
 // app.use((req, res, next) => {
