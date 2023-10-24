@@ -9,6 +9,7 @@ const routerUsers = require("./src/routers/users.router");
 const morgan = require("morgan");
 const port = process.env.PORT || 3000;
 const mock = require("./src/database/mockPokemons.js");
+const auth = require("./src/auth/auth");
 
 //homemade logger with middleware (deprecated)
 // app.use((req, res, next) => {
@@ -33,7 +34,7 @@ app.use(express.json())
 postgres.initDB();
 mongodb.initDB(mock);
 
-app.use("/pokemons", routerPokemons);
+app.use("/pokemons", auth, routerPokemons);
 app.use("/login", routerUsers);
 
 
