@@ -10,3 +10,6 @@
 # heroku create (-a name). Create app on heroku (check on your dashboard)
 # git push heroku main
 
+
+# WARNING add to env variable on heroku dashboard PGSSLMODE=no-verify
+
