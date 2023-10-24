@@ -8,23 +8,28 @@ class pokemonsController {
       //if query param 'name', find pokemons like 'name' param
       if (req.query.name) {
          const name = req.query.name;
-         await Pokemon.find()
-            .where({ name: { $regex: ".*" + name + ".*" } })
-            .limit(4)
-            //we can also find pokemon exactly equal name with { 'name': name } but its more flexible like above for user
-            .then((pokemons) => {
-               if (pokemons != "") {
-                  const message = "Le pokemons a bien été récupéré.";
-                  res.json({
-                     message,
-                     count: pokemons.length,
-                     pokemons: pokemons,
-                  });
-               } else {
-                  const message = `Le pokemon ${name} n'existe pas. Vérifié l'ortographe et réessayer`;
-                  res.status(400).json({ message });
-               }
-            });
+         if (name.length > 1) {
+            await Pokemon.find()
+               .where({ name: { $regex: ".*" + name + ".*" } })
+               .limit(4)
+               //we can also find pokemon exactly equal name with { 'name': name } but its more flexible like above for user
+               .then((pokemons) => {
+                  if (pokemons != "") {
+                     const message = "Le pokemons a bien été récupéré.";
+                     res.json({
+                        message,
+                        count: pokemons.length,
+                        pokemons: pokemons,
+                     });
+                  } else {
+                     const message = `Le pokemon ${name} n'existe pas. Vérifié l'ortographe et réessayer`;
+                     res.status(400).json({ message });
+                  }
+               });
+         } else {
+            const message = "Le terme de recherche doit contenir au moins 2 caractères."
+            res.status(400).json({message});
+         }
       } else {
          await Pokemon.find()
             .then((pokemons) => {
@@ -183,13 +188,13 @@ class pokemonsController {
    }
 
    //function to get all pokemons with pagination options
-   //this function can take page=<number> and nb=<number> in query param
+   //this function can take page=<number> and limit=<number> in query param
    //by default it will return page 1 with 4 pokemons
    async getAllPaginate(req, res) {
       const page =
          req.query.page && req.query.page > 0 ? parseInt(req.query.page) : 1;
       const numberPerPage =
-         req.query.nb && req.query.nb > 0 ? parseInt(req.query.nb) : 4;
+         req.query.limit && req.query.limit > 0 ? parseInt(req.query.limit) : 4;
       await Pokemon.aggregate([
          {
             $facet: {
