@@ -30,7 +30,7 @@ const port = process.env.PORT || 3000;
 //morgan logger
 app.use(express.json())
    // .use(morgan("dev"))
-   .use(favicon(__dirname + "/favicon.ico"))
+   .use(favicon(__dirname + '/favicon.ico'))
    // .use(express.static(path.join(__dirname, "/src/public")));
 
 //initialise databases
@@ -45,6 +45,10 @@ app.use("/login", routerUsers);
 // app.get("/", (req, res) => {
 //    res.sendFile(path.join(__dirname, "/src/views/index.html"));
 // });
+
+app.get('/', (req, res) => {
+   res.json('Hello, Heroku ! 👋')
+ })
 
 //404 errors management
 app.use((req, res) => {
