@@ -58,6 +58,6 @@ app.use((req, res) => {
 });
 
 //port listening configuration
-app.listen(port, () =>
+app.listen(process.env.PORT || 3000, () =>
    console.log(`Application node demarrée sur : http://localhost:${port}`)
 );
