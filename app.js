@@ -30,8 +30,8 @@ const port = process.env.PORT || 3000;
 //morgan logger
 app.use(express.json())
    // .use(morgan("dev"))
-   .use(favicon(path.join(__dirname, "/favicon.ico")))
-   .use(express.static(path.join(__dirname, "/src/public")));
+   .use(favicon(__dirname + "/favicon.ico"))
+   // .use(express.static(path.join(__dirname, "/src/public")));
 
 //initialise databases
 postgres.initDB();
@@ -42,9 +42,9 @@ app.use("/login", routerUsers);
 
 
 //redirect empty end point on a html showing a little text
-app.get("/", (req, res) => {
-   res.sendFile(path.join(__dirname, "/src/views/index.html"));
-});
+// app.get("/", (req, res) => {
+//    res.sendFile(path.join(__dirname, "/src/views/index.html"));
+// });
 
 //404 errors management
 app.use((req, res) => {
