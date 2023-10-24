@@ -1,3 +1,4 @@
+require("./database/postgres");
 require("./database/mongodb");
 const path = require("path");
 const express = require("express");
