@@ -10,7 +10,7 @@ if (process.env.NODE_ENV === 'production') {
       'st2ieumd8bpvbm7t',
       'hyvxqkhq2cm7m6ds',
       {
-         host: 'zux7qwgu5uxij5ke',
+         host: 'u3r5w4ayhxzdrw87.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
          port: '3306',
          dialect:
             'mariadb' /* one of 'mysql' | 'postgres' | 'sqlite' | 'mariadb' | 'mssql' | 'db2' | 'snowflake' | 'oracle' */,
