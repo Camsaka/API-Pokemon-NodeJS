@@ -6,22 +6,24 @@ let sequelize;
 
 if (process.env.NODE_ENV === 'production') {
    sequelize = new Sequelize(
-      'db8s2lm3nc0hp9',
-      'mssjrtppzqoxku',
-      'c0f472454343fb8f041d4f5fb60c0b1dcd10c5f5d04e6141b04186c797b82048',
+      'zux7qwgu5uxij5ke',
+      'st2ieumd8bpvbm7t',
+      'hyvxqkhq2cm7m6ds',
       {
-         host: 'ec2-54-84-182-168.compute-1.amazonaws.com',
+         host: 'zux7qwgu5uxij5ke',
+         port: '3306',
          dialect:
-            'postgres' /* one of 'mysql' | 'postgres' | 'sqlite' | 'mariadb' | 'mssql' | 'db2' | 'snowflake' | 'oracle' */,
+            'mariadb' /* one of 'mysql' | 'postgres' | 'sqlite' | 'mariadb' | 'mssql' | 'db2' | 'snowflake' | 'oracle' */,
          logging: true,
       }
    );
 } else {
    //Passing parameters separately (other dialects)
-   sequelize = new Sequelize('userapipokemons', 'postgres', 'root', {
+   sequelize = new Sequelize('usersapipokemons', 'root', '', {
       host: 'localhost',
+      port: '3307',
       dialect:
-         'postgres' /* one of 'mysql' | 'postgres' | 'sqlite' | 'mariadb' | 'mssql' | 'db2' | 'snowflake' | 'oracle' */,
+         'mariadb' /* one of 'mysql' | 'postgres' | 'sqlite' | 'mariadb' | 'mssql' | 'db2' | 'snowflake' | 'oracle' */,
       logging: false,
    });
 }
@@ -31,7 +33,7 @@ const User = UserModel(sequelize, DataTypes);
 sequelize
    .authenticate()
    .then((_) =>
-      console.log('Connection has been established successfully. postgres')
+      console.log('Connection has been established successfully. mariadb')
    )
    .catch((error) => {
       console.error('Unable to connect to the database:', error);

@@ -3,7 +3,7 @@ const favicon = require("serve-favicon");
 const app = express();
 const path = require("path");
 
-const postgres = require("./src/database/postgres");
+const mariadb = require("./src/database/postgres");
 const mongodb = require("./src/database/mongodb");
 const routerPokemons = require("./src/routers/pokemons.router");
 const routerUsers = require("./src/routers/users.router");
@@ -32,7 +32,7 @@ app.use(express.json())
    .use(express.static(path.join(__dirname, "/src/public")));
 
 //initialise databases
-postgres.initDB();
+mariadb.initDB();
 mongodb.initDB(mock);
 
 //redirect empty end point on a html showing a little text
