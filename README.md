@@ -11,6 +11,7 @@ clone this project => npm init => npm run start
 # Heroku deployment
  heroku create (-a name). Create app on heroku (check on your dashboard)
  git push heroku main
+ heroku ps:scale web=1 (i dont use dynos)
 
 
  WARNING add to env variable on heroku dashboard PGSSLMODE=no-verify

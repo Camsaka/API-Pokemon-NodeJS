@@ -1,5 +1,6 @@
 const { Sequelize, DataTypes } = require('sequelize');
 const UserModel = require('../models/user.model');
+const confirmationTokenModel = require("../models/confirmationToken.model");
 const bcrypt = require('bcrypt');
 
 let sequelize;
@@ -29,6 +30,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 const User = UserModel(sequelize, DataTypes);
+const confirmationToken = confirmationTokenModel(sequelize, DataTypes);
 
 sequelize
    .authenticate()
@@ -43,13 +45,15 @@ const initDB = () => {
    return sequelize.sync({ force: true }).then((_) => {
       console.log('Init user');
       const myPlaintextPassword = 'camsaka';
-      bcrypt.hash(myPlaintextPassword, 5).then((hash) => {
+      bcrypt.hash(myPlaintextPassword, 10).then((hash) => {
          User.create({
             username: 'camsaka',
+            email : "camille.gaut@sfr.fr",
             password: hash,
+            active : true
          }).then((user) => console.log(user));
       });
    });
 };
 
-module.exports = { initDB, User };
+module.exports = { initDB, User, confirmationToken };

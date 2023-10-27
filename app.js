@@ -9,6 +9,7 @@ const routerPokemons = require("./src/routers/pokemons.router");
 const routerUsers = require("./src/routers/users.router");
 const mock = require("./src/database/mockPokemons.js");
 const auth = require("./src/auth/auth");
+const nodemailer = require("nodemailer");
 
 //heroku dynamic port
 const port = process.env.PORT || '3000';

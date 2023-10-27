@@ -13,7 +13,7 @@ class pokemonsController {
                //we can also find pokemon exactly equal name with { 'name': name } but its more flexible like above for user
                .then((pokemons) => {
                   if (pokemons != "") {
-                     const message = "Le pokemons a bien été récupéré.";
+                     const message = "Le pokemon a bien été récupéré.";
                      res.json({
                         message,
                         count: pokemons.length,
