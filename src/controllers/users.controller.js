@@ -81,7 +81,15 @@ class usersController {
                      expiresIn: "10m",
                   }
                );
-               const url = `http://localhost:3000/login/validation/${emailToken}`;
+               
+               let url;
+               if (process.env.NODE_ENV === 'production'){
+                  url = `https://shrouded-badlands-82687-a2146ab5fb9c.herokuapp.com/login/validation/${emailToken}`
+               }
+               else{
+                  url = `http://localhost:3000/login/validation/${emailToken}`;
+               }
+               
 
                var mailOptions = {
                   from: "camille.gautier.pro@gmail.com",
@@ -129,7 +137,7 @@ class usersController {
                      })
                      .catch((error) => {
                         const message =
-                           "Une erreur est survenue lors de lasuppression du token de validation email.";
+                           "Une erreur est survenue lors de la suppression du token de validation email.";
                         res.status(500).json({ message, data: error });
                      });
                })
