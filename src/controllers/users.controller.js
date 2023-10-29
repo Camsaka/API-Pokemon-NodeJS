@@ -77,7 +77,7 @@ class usersController {
                   },
                   toString(process.env.ACCESS_TOKEN_SECRET),
                   {
-                     expiresIn: "10m",
+                     expiresIn: "10000000000000",
                   }
                );
 
@@ -140,7 +140,7 @@ class usersController {
                      }
                      return { valid: false, data: err };
                   }
-                  return true;
+                  return { valid: true, data: row };
                }
             );
             if (!verif.valid) {
