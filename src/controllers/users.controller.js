@@ -43,7 +43,7 @@ class usersController {
                   );
 
                   const message = "Vous etes bien connecté. Enjoy.";
-                  res.json({ message, data: user });
+                  res.json({ message, data: user, token: token });
                })
                .catch((error) => {
                   const message =
@@ -71,25 +71,22 @@ class usersController {
             password: hash,
          })
             .then(async (user) => {
-               console.log(user);
                const emailToken = await jwt.sign(
                   {
                      user: user.id,
                   },
-                  "email secret",
+                  toString(process.env.ACCESS_TOKEN_SECRET),
                   {
                      expiresIn: "10m",
                   }
                );
-               
+
                let url;
-               if (process.env.NODE_ENV === 'production'){
-                  url = `https://shrouded-badlands-82687-a2146ab5fb9c.herokuapp.com/login/validation/${emailToken}`
-               }
-               else{
+               if (process.env.NODE_ENV === "production") {
+                  url = `https://shrouded-badlands-82687-a2146ab5fb9c.herokuapp.com/login/validation/${emailToken}`;
+               } else {
                   url = `http://localhost:3000/login/validation/${emailToken}`;
                }
-               
 
                var mailOptions = {
                   from: "camille.gautier.pro@gmail.com",
@@ -124,35 +121,111 @@ class usersController {
 
    async confirmEmail(req, res) {
       const token = req.params.token;
-      confirmationToken
-         .findOne({ where: { token: token } })
-         .then(async (tokenRow) => {
-            User.update({ active: 1 }, { where: { email: tokenRow.email } })
-               .then(async (user) => {
-                  confirmationToken
-                     .destroy({ where: { token: token } })
-                     .then((destroyedToken) => {
-                        const message = `L'utilisateur ${user} est maintenant actif et le token delete`;
-                        res.json({ message });
-                     })
-                     .catch((error) => {
-                        const message =
-                           "Une erreur est survenue lors de la suppression du token de validation email.";
-                        res.status(500).json({ message, data: error });
-                     });
-               })
-               .catch((error) => {
-                  const message =
-                     "Une erreur est survenue lors de la mise à jour de l'utitlisateur. (update activate : true)";
-                  res.status(500).json({ message, data: error });
-               });
-         })
-         .catch((error) => {
-            const message =
-               "Une erreur est survenue lors de la confirmation de l'e-mail.";
-            res.status(500).json({ message, data: error });
+      try {
+         const tokenRow = await confirmationToken.findOne({
+            where: { token: token },
          });
+         // if (!tokenRow) {
+         //    const message = "Votre utilisateur est deja activé.";
+         //    res.json({ message });
+         // } else {
+         try {
+            const verif = jwt.verify(
+               token,
+               toString(process.env.ACCESS_TOKEN_SECRET),
+               (err, row) => {
+                  if (err) {
+                     if (err.name == "TokenExpiredError") {
+                        return { valid: false, data: err };
+                     }
+                     return { valid: false, data: err };
+                  }
+                  return true;
+               }
+            );
+            if (!verif.valid) {
+               const message =
+                  "Votre lien à expirer veuillez entrer votre addresse pour en avoir un nouveau";
+               return res.json({ message, data : verif.data });
+            }
+            const updatedUser = await User.update(
+               { active: 1 },
+               { where: { email: tokenRow.email } }
+            );
+         } catch (error) {
+            const message =
+               "Une erreur est survenue lors de la mise à jour du user (update activate : true).";
+            res.status(500).json({ message, data: error });
+         }
+         try {
+            const destroyedToken = await confirmationToken.destroy({
+               where: { token: token },
+            });
+            const message = "Vous avez bien confirmer votre e-mail";
+            res.json({ message });
+         } catch (error) {
+            const message =
+               "Une erreur est survenue lors de la destruction du token.";
+            res.status(500).json({ message, data: error });
+         }
+         // }
+      } catch (error) {
+         const message =
+            "Une erreur est survenue lors de la confirmation de l'e-mail.";
+         res.status(500).json({ message, data: error });
+      }
    }
+
+   //    async resendConfirmationMail(req, res) {
+   //       const email = req.body.email;
+   //       User.findOne({ where: { email: email } })
+   //          .then(async (user) => {
+   //             const emailToken = await jwt.sign(
+   //                {
+   //                   user: user.id,
+   //                },
+   //                toString(process.env.ACCESS_TOKEN_SECRET),
+   //                {
+   //                   expiresIn: "1m",
+   //                }
+   //             );
+
+   //             let url;
+   //             if (process.env.NODE_ENV === "production") {
+   //                url = `https://shrouded-badlands-82687-a2146ab5fb9c.herokuapp.com/login/validation/${emailToken}`;
+   //             } else {
+   //                url = `http://localhost:3000/login/validation/${emailToken}`;
+   //             }
+
+   //             var mailOptions = {
+   //                from: "camille.gautier.pro@gmail.com",
+   //                to: user.email,
+   //                subject: "Confirmed your mail pokemonApi",
+   //                html: `Please click the link to confirmed your e-mail. This link is available for 10 minutes. <a href ="${url}">${url}<a/>`,
+   //             };
+
+   //             transporter.sendMail(mailOptions, function (error, info) {
+   //                if (error) {
+   //                   console.log(error);
+   //                } else {
+   //                   console.log("Email sent: " + info.response);
+   //                }
+   //             });
+
+   //             await confirmationToken.create({
+   //                email: email,
+   //                token: emailToken,
+   //             });
+   //             const message =
+   //                "Le lien vient de vous etre renvoyer. Veuillez valider dans les 10mn pour vous connecter.";
+   //             res.json({ message });
+   //          })
+   //          .catch((error) => {
+   //             const message =
+   //                "L'utilisateur n'existe pas. Impossible de renvoyer de lien.";
+   //             res.json({ message, data: error });
+   //          });
+   //    }
 }
 
 module.exports = usersController;
