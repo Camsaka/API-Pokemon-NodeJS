@@ -146,7 +146,7 @@ class usersController {
             if (!verif.valid) {
                const message =
                   "Votre lien à expirer veuillez entrer votre addresse pour en avoir un nouveau";
-               return res.json({ message, data : verif.data });
+               return res.json({ message, data: verif.data });
             }
             const updatedUser = await User.update(
                { active: 1 },
@@ -176,56 +176,61 @@ class usersController {
       }
    }
 
-   //    async resendConfirmationMail(req, res) {
-   //       const email = req.body.email;
-   //       User.findOne({ where: { email: email } })
-   //          .then(async (user) => {
-   //             const emailToken = await jwt.sign(
-   //                {
-   //                   user: user.id,
-   //                },
-   //                toString(process.env.ACCESS_TOKEN_SECRET),
-   //                {
-   //                   expiresIn: "1m",
-   //                }
-   //             );
+   async resendConfirmationMail(req, res) {
+      const email = req.body.email;
+      try {
+         const user = await User.findOne({ where: { email: email } });
+         if (!user) {
+            const message = "Aucun compte associé"
+            console.log(user);
+            return res.status(404).json({message})
+         } else {
+            console.log(user);
+            const emailToken = await jwt.sign(
+               {
+                  user: user.id,
+               },
+               toString(process.env.ACCESS_TOKEN_SECRET),
+               {
+                  expiresIn: "10000000000000",
+               }
+            );
 
-   //             let url;
-   //             if (process.env.NODE_ENV === "production") {
-   //                url = `https://shrouded-badlands-82687-a2146ab5fb9c.herokuapp.com/login/validation/${emailToken}`;
-   //             } else {
-   //                url = `http://localhost:3000/login/validation/${emailToken}`;
-   //             }
+            let url;
+            if (process.env.NODE_ENV === "production") {
+               url = `https://shrouded-badlands-82687-a2146ab5fb9c.herokuapp.com/login/validation/${emailToken}`;
+            } else {
+               url = `http://localhost:3000/login/validation/${emailToken}`;
+            }
 
-   //             var mailOptions = {
-   //                from: "camille.gautier.pro@gmail.com",
-   //                to: user.email,
-   //                subject: "Confirmed your mail pokemonApi",
-   //                html: `Please click the link to confirmed your e-mail. This link is available for 10 minutes. <a href ="${url}">${url}<a/>`,
-   //             };
+            var mailOptions = {
+               from: "camille.gautier.pro@gmail.com",
+               to: email,
+               subject: "Confirmed your mail pokemonApi",
+               html: `Please click the link to confirmed your e-mail. This link is available for 10 minutes. <a href ="${url}">${url}<a/>`,
+            };
 
-   //             transporter.sendMail(mailOptions, function (error, info) {
-   //                if (error) {
-   //                   console.log(error);
-   //                } else {
-   //                   console.log("Email sent: " + info.response);
-   //                }
-   //             });
+            transporter.sendMail(mailOptions, function (error, info) {
+               if (error) {
+                  console.log(error);
+               } else {
+                  console.log("Email sent: " + info.response);
+               }
+            });
 
-   //             await confirmationToken.create({
-   //                email: email,
-   //                token: emailToken,
-   //             });
-   //             const message =
-   //                "Le lien vient de vous etre renvoyer. Veuillez valider dans les 10mn pour vous connecter.";
-   //             res.json({ message });
-   //          })
-   //          .catch((error) => {
-   //             const message =
-   //                "L'utilisateur n'existe pas. Impossible de renvoyer de lien.";
-   //             res.json({ message, data: error });
-   //          });
-   //    }
+            await confirmationToken.create({
+               email: email,
+               token: emailToken,
+            });
+            const message =
+               "L'email vient de vous etre renvoyé";
+            res.json({ message });
+         }
+      } catch(err){
+         res.status(500).json({data: err})
+
+      }
+   }
 }
 
 module.exports = usersController;
