@@ -6,7 +6,7 @@ See sequelize doc : https://sequelize.org/docs/v6/getting-started/
 
 
 # To run
-clone this project => npm init => npm run start
+clone this project => npm install => npm run start
 
 # Heroku deployment
  heroku create (-a name). Create app on heroku (check on your dashboard)
